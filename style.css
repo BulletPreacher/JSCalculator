@@ -24,13 +24,17 @@ body {
 }
 
 .screenTop {
+    font-size: 20px;
     flex: 1;
     margin:5px;
+    margin-left: auto;
 }
 
 .screenBottom {
+    font-size: 40px;
     flex: 2;
     margin:5px;
+    margin-left: auto;
 }
 
 .buttons {
