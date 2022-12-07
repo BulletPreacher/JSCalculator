@@ -19,6 +19,7 @@ allButtons.forEach(button => {
                 screenBottom.innerHTML = "0";
                 operatorClicked = "false"
                 equalsClicked = "false"
+                operatorClicked2 = "false"
                 lastNumber = "0";
                 lastOperator = "";
                 break;
@@ -30,7 +31,7 @@ allButtons.forEach(button => {
                 }
                 break;
             case '%':
-                if (operatorClicked == true){
+                if (operatorClicked2 == true){
                    let  bob =  parseFloat(screenBottom.innerHTML)/100;
                    screenBottom.innerHTML=bob;
                 }
@@ -48,7 +49,7 @@ allButtons.forEach(button => {
             case '8':
             case '9':
             case '0':
-                if (operatorClicked2 == true) {
+                if (operatorClicked == true) {
                     screenBottom.innerHTML = input;
                     lastNumber = screenBottom.innerHTML;
                     operatorClicked = false;
@@ -75,7 +76,7 @@ allButtons.forEach(button => {
             case '*':
             case '-':
             case '+':
-                lastOperator = input;
+                lastOperator = input;               
                 if(equalsClicked==true){
                     screenTop.innerHTML=screenBottom.innerHTML + input;
                     equalsClicked=false;
