@@ -84,7 +84,7 @@ allButtons.forEach(button => {
                     screenTop.innerHTML = "0" + input;
                 } else if ((!isNaN(screenBottom.innerHTML)) && (isNaN(screenTop.innerHTML))) {
                     screenTop.innerHTML += screenBottom.innerHTML;
-                    let result = eval(screenTop.innerHTML);
+                    let result = evaluate(screenTop.innerHTML,lastOperator);
                     console.log(lastNumber);
                     screenTop.innerHTML = result + input;
                     screenBottom.innerHTML = result;
@@ -102,7 +102,7 @@ allButtons.forEach(button => {
             case '=':
                 if (equalsClicked == true) {
                     screenTop.innerHTML = screenBottom.innerHTML + lastOperator + lastNumber;
-                    let result = eval(screenTop.innerHTML);
+                    let result = evaluate(screenTop.innerHTML,lastOperator);
                     screenTop.innerHTML = screenBottom.innerHTML + lastOperator + lastNumber;
                     screenBottom.innerHTML = result;
                     console.log(screenTop.innerHTML);
@@ -111,7 +111,7 @@ allButtons.forEach(button => {
                 } else if (screenTop.innerHTML !== "") {
                     screenTop.innerHTML += screenBottom.innerHTML;
                     equalsClicked = true;
-                    let result = eval(screenTop.innerHTML);
+                    let result = evaluate(screenTop.innerHTML,lastOperator);
                     screenTop.innerHTML += "="
                     screenBottom.innerHTML = result;
                 }
@@ -120,7 +120,19 @@ allButtons.forEach(button => {
     });
 });
 
-function evaluate() {
+function evaluate(exString, symbol) {
+    let num1 = parseFloat(exString.split(symbol)[0]);
+    let num2 = parseFloat(exString.split(symbol)[1]);
 
+    if (symbol == "*") {
+        result = num1 * num2;
+   }else if (symbol == "/") {
+    result = num1 / num2;
+   }else if (symbol == "-") {
+    result = num1 - num2;
+}else if (symbol == "+") {
+    result = num1 + num2;
+}
+return result;
 
 }
