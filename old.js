@@ -1,16 +1,14 @@
 let allButtons = Array.from(document.getElementsByClassName('button'));
 let screenTop = document.getElementById('top');
 let screenBottom = document.getElementById('bottom');
-
-
-let operatorClicked = "false"
-let operatorClicked2 = "false"
-let equalsClicked = "false"
-let dotClicked = "false"
-let lastNumber = "0";
-let lastOperator = "";
 screenTop.innerHTML = "";
 screenBottom.innerHTML = "0";
+var operatorClicked = "false"
+var operatorClicked2 = "false"
+var equalsClicked = "false"
+var lastNumber = "0";
+var lastOperator = "";
+
 
 allButtons.forEach(button => {
     button.addEventListener('click', function handleClick(e) {
@@ -20,9 +18,8 @@ allButtons.forEach(button => {
                 screenTop.innerHTML = "";
                 screenBottom.innerHTML = "0";
                 operatorClicked = "false"
-                operatorClicked2 = "false"
                 equalsClicked = "false"
-                dotClicked = "false"
+                operatorClicked2 = "false"
                 lastNumber = "0";
                 lastOperator = "";
                 break;
@@ -34,13 +31,13 @@ allButtons.forEach(button => {
                 }
                 break;
             case '%':
-                if (operatorClicked2 == true) {
-                    let divideHundred = parseFloat(screenBottom.innerHTML) / 100;
-                    screenBottom.innerHTML = divideHundred;
+                if (operatorClicked2 == true){
+                   let  bob =  parseFloat(screenBottom.innerHTML)/100;
+                   screenBottom.innerHTML=bob;
                 }
                 break;
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////
 
             case '1':
             case '2':
@@ -66,58 +63,55 @@ allButtons.forEach(button => {
                 }
                 break;
             case '.':
-                if (screenBottom.innerHTML.includes('.')) {
-                    return;
-                } else if (screenBottom.innerHTML == "") {
+                if (screenBottom.innerHTML == "") {
                     screenBottom.innerHTML = "0";
                 } else {
                     screenBottom.innerHTML += input;
                 }
                 break;
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////
+            ///////////////////////////////////////////////////////////////////////////////////////////
 
             case '/':
             case '*':
             case '-':
             case '+':
-                lastOperator = input;
-                if (lastOperator == "*") {
-                    lastOperator = "x";
-                } else if (lastOperator == "/") {
-                    lastOperator = "÷";
-                }
-                if (equalsClicked == true) {
-                    screenTop.innerHTML = screenBottom.innerHTML + lastOperator;
-                    equalsClicked = false;
-                } else if (screenBottom.innerHTML == '') {
-                    screenTop.innerHTML = "0" + lastOperator;
+                lastOperator = input;               
+                if(equalsClicked==true){
+                    screenTop.innerHTML=screenBottom.innerHTML + input;
+                    equalsClicked=false;
+                }else if(screenBottom.innerHTML == '') {
+                    screenTop.innerHTML = "0" + input;
                 } else if ((!isNaN(screenBottom.innerHTML)) && (isNaN(screenTop.innerHTML))) {
                     screenTop.innerHTML += screenBottom.innerHTML;
-                    let result = evaluate(screenTop.innerHTML, lastOperator);
-                    screenTop.innerHTML = result + lastOperator;
+                    let result = eval(screenTop.innerHTML);
+                    console.log(lastNumber);
+                    screenTop.innerHTML = result + input;
                     screenBottom.innerHTML = result;
                 } else {
                     var moved = screenBottom.innerHTML;
                     screenTop.innerHTML = moved;
-                    screenTop.innerHTML += lastOperator;
+                    screenTop.innerHTML += input;
                 }
                 operatorClicked = true;
                 operatorClicked2 = true;
                 break;
-                
-/////////////////////////////////////////////////////////////////////////////////////////////////////
+
+            ///////////////////////////////////////////////////////////////////////////////////////////
 
             case '=':
                 if (equalsClicked == true) {
                     screenTop.innerHTML = screenBottom.innerHTML + lastOperator + lastNumber;
-                    let result = evaluate(screenTop.innerHTML, lastOperator);
+                    let result = eval(screenTop.innerHTML);
                     screenTop.innerHTML = screenBottom.innerHTML + lastOperator + lastNumber;
                     screenBottom.innerHTML = result;
+                    console.log(screenTop.innerHTML);
+                    console.log(lastOperator);
+
                 } else if (screenTop.innerHTML !== "") {
                     screenTop.innerHTML += screenBottom.innerHTML;
                     equalsClicked = true;
-                    let result = evaluate(screenTop.innerHTML, lastOperator);
+                    let result = eval(screenTop.innerHTML);
                     screenTop.innerHTML += "="
                     screenBottom.innerHTML = result;
                 }
@@ -126,21 +120,7 @@ allButtons.forEach(button => {
     });
 });
 
-function evaluate(exString, symbol) {
-    let num1 = parseFloat(exString.split(symbol)[0]);
-    let num2 = parseFloat(exString.split(symbol)[1]);
-    if (symbol == "x") {
-        return result = num1 * num2;
-    } else if (symbol == "÷") {
-        result = num1 / num2;
-        if (result == "Infinity") {
-            return "Stop it"
-        } else {
-            return result;
-        }
-    } else if (symbol == "-") {
-        return result = num1 - num2;
-    } else if (symbol == "+") {
-        return result = num1 + num2;
-    }
+function evaluate() {
+
+
 }
