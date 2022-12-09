@@ -61,10 +61,10 @@ allButtons.forEach(button => {
             case '0':
                 if (active == true) {
                     screenBottom.innerHTML = input;
+                    active = false;
                 } else if (screenBottom.innerHTML == "0") {
                     screenBottom.innerHTML = "";
                     screenBottom.innerHTML += input;
-
                 } else {
                     screenBottom.innerHTML += input;
                 }
@@ -150,11 +150,11 @@ allButtons.forEach(button => {
                 } else {
                     lastNumber = screenBottom.innerHTML;
                     result = evaluate(firstNumber, lastNumber, lastOperator);
-
                     screenTop.innerHTML = firstNumber + lastOperator + lastNumber + "=";
                     screenBottom.innerHTML = result;
                     lastNumber = screenBottom.innerHTML;
                     firstNumber = result;
+                    active = true;
                 }
 
                 break;
