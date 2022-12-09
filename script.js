@@ -13,7 +13,7 @@ var firstNumber = 0;
 var lastOperator = "";
 var result = 0;
 var active = false;
-var count=0;
+var count = 0;
 
 allButtons.forEach(button => {
     button.addEventListener('click', function handleClick(e) {
@@ -29,9 +29,9 @@ allButtons.forEach(button => {
                 firstNumber = 0
                 lastNumber = 0;
                 lastOperator = "";
-                result =0;    
+                result = 0;
                 active = false;
-                count=0;
+                count = 0;
                 break;
             case 'del':
                 if (screenBottom.innerHTML.length == 1) {
@@ -41,10 +41,10 @@ allButtons.forEach(button => {
                 }
                 break;
             case '%':
-               
-                    let divideHundred = parseFloat(screenBottom.innerHTML) / 100;
-                    screenBottom.innerHTML = divideHundred;
-                
+
+                let divideHundred = parseFloat(screenBottom.innerHTML) / 100;
+                screenBottom.innerHTML = divideHundred;
+
                 break;
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -60,13 +60,13 @@ allButtons.forEach(button => {
             case '9':
             case '0':
                 if (active == true) {
-                    screenBottom.innerHTML = input;               
+                    screenBottom.innerHTML = input;
                 } else if (screenBottom.innerHTML == "0") {
                     screenBottom.innerHTML = "";
                     screenBottom.innerHTML += input;
-                
+
                 } else {
-                    screenBottom.innerHTML += input;            
+                    screenBottom.innerHTML += input;
                 }
                 break;
             case '.':
@@ -85,38 +85,59 @@ allButtons.forEach(button => {
             case '*':
             case '-':
             case '+':
-                
-                if (count==0) {
+
+                if (count == 0) {
                     screenTop.innerHTML += screenBottom.innerHTML + input;
-                    firstNumber=screenBottom.innerHTML;
-                    lastOperator=input;
-                }else if (count == 1) { //will only run on the second time
-                    lastNumber=screenBottom.innerHTML;
-                    console.log("count1:FirstNumber " + firstNumber)
-                    console.log("count1:LastNumber " +lastNumber)
-                    console.log("count1:Operator " +lastOperator)
-                    result = evaluate(firstNumber,lastNumber,lastOperator);
-                    console.log(result);
-                    screenTop.innerHTML=result+input;                      
-                    screenBottom.innerHTML=result;
-                    lastOperator=input;
-                    firstNumber=result;
-                    console.log("Again  " + lastNumber);
-                }else if (count>= 2){
-                    lastNumber=screenBottom.innerHTML;
-                    screenTop.innerHTML+=screenBottom.innerHTML;   
-                    console.log("count2:FirstNumber " +firstNumber)
-                    console.log("count2:LastNumber " +lastNumber)
-                    console.log("count2:Operator " +lastOperator)
-                    result = evaluate(firstNumber,lastNumber,lastOperator);
-                    screenTop.innerHTML = result + input;
-                    firstNumber=result;
-                    lastNumber=screenBottom.innerHTML;
-                    lastOperator=input;
+                    firstNumber = screenBottom.innerHTML;
+                    lastOperator = input;
+                } else if (count == 1) { //will only run on the second time
+                    if (screenTop.innerHTML.includes("=")) {
+                        console.log("lmao");
+                        firstNumber=result;
+                        console.log(result);
+                        lastNumber=screenBottom.innerHTML;
+                        lastOperator = input;
+                        result = evaluate(firstNumber, lastNumber, lastOperator);
+                        console.log("Equals: " + result)
+                        screenTop.innerHTML=result + input
+                    } else {
+                        lastNumber = screenBottom.innerHTML;
+                        console.log("count1:FirstNumber " + firstNumber)
+                        console.log("count1:LastNumber " + lastNumber)
+                        console.log("count1:Operator " + lastOperator)
+                        result = evaluate(firstNumber, lastNumber, lastOperator);
+                        console.log(result);
+                        screenTop.innerHTML = result + input;
+                        screenBottom.innerHTML = result;
+                        lastOperator = input;
+                        firstNumber = result;
+                        console.log("Again  " + lastNumber);
+                    }
+
+                } else if (count >= 2) {
+                    if (screenTop.innerHTML.includes("=")) {
+                        firstNumber=result;
+                        lastNumber=screenBottom.innerHTML;
+                        result = evaluate(firstNumber, lastNumber, lastOperator);
+                        console.log("Equals: " + result)
+                        screenTop.innerHTML=result + input
+                    } else {
+                        lastNumber = screenBottom.innerHTML;
+                        screenTop.innerHTML += screenBottom.innerHTML;
+                        console.log("count2:FirstNumber " + firstNumber)
+                        console.log("count2:LastNumber " + lastNumber)
+                        console.log("count2:Operator " + lastOperator)
+                        result = evaluate(firstNumber, lastNumber, lastOperator);
+                        screenTop.innerHTML = result + input;
+                        firstNumber = result;
+                        lastNumber = screenBottom.innerHTML;
+                        lastOperator = input;
+                    }
+
                 }
-                
+
                 active = true;
-                count = count +1;
+                count = count + 1;
                 console.log("Overallcount" + count);
 
                 break;
@@ -124,17 +145,24 @@ allButtons.forEach(button => {
             /////////////////////////////////////////////////////////////////////////////////////////////////////
 
             case '=':
-            lastNumber=screenBottom.innerHTML;
-            result = evaluate(firstNumber,lastNumber,lastOperator);
-            firstNumber=result;
-            screenTop.innerHTML = result + "="; 
-            
-            break;
+                if (screenBottom.innerHTML == "0") {
+                    screenTop.innerHTML = "0=";
+                } else {
+                    lastNumber = screenBottom.innerHTML;
+                    result = evaluate(firstNumber, lastNumber, lastOperator);
+
+                    screenTop.innerHTML = firstNumber + lastOperator + lastNumber + "=";
+                    screenBottom.innerHTML = result;
+                    lastNumber = screenBottom.innerHTML;
+                    firstNumber = result;
+                }
+
+                break;
         }
     });
 });
 
-function evaluate(num1, num2,symbol) {
+function evaluate(num1, num2, symbol) {
     if (symbol == "*") {
         result = parseFloat(num1) * parseFloat(num2);
     } else if (symbol == "/") {
