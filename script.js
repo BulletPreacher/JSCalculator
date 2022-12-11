@@ -59,23 +59,26 @@ allButtons.forEach(button => {
             case '8':
             case '9':
             case '0':
-                if (active == true) {
+                if (active == true) {   //After operator used, overwrite last number with new input
                     screenBottom.innerHTML = input;
                     active = false;
-                } else if (screenBottom.innerHTML == "0") {
+                } else if (screenBottom.innerHTML == "0") { //Overwrites zero, eg. prevents 0002 being typed 
                     screenBottom.innerHTML = "";
                     screenBottom.innerHTML += input;
                 } else {
-                    screenBottom.innerHTML += input;
+                    screenBottom.innerHTML += input; //Active false && !="0", type normally
                 }
                 break;
             case '.':
-                if (screenBottom.innerHTML.includes('.')) {
+                if (active == true) {   //After operator used, overwrite last number with 0.
+                    screenBottom.innerHTML = "0" + input;
+                    active = false;
+                } else if (screenBottom.innerHTML.includes('.')) { //prevents double pressing .
                     return;
-                } else if (screenBottom.innerHTML == "") {
+                } else if (screenBottom.innerHTML == "") { //If number empty, display default of 0.
                     screenBottom.innerHTML = "0";
                 } else {
-                    screenBottom.innerHTML += input;
+                    screenBottom.innerHTML += input; //Havent pressed operator, types normally
                 }
                 break;
 
@@ -87,19 +90,23 @@ allButtons.forEach(button => {
             case '+':
 
                 if (count == 0) {
-                    screenTop.innerHTML += screenBottom.innerHTML + input;
-                    firstNumber = screenBottom.innerHTML;
-                    lastOperator = input;
-                } else if (count == 1) { //will only run on the second time
-                    if (screenTop.innerHTML.includes("=")) {
-                        console.log("lmao");
-                        firstNumber=result;
-                        console.log(result);
-                        lastNumber=screenBottom.innerHTML;
+                    if (screenTop.innerHTML.includes("=")) {//After operator pressed for first time, E.g 6 *
+                        screenTop.innerHTML = screenBottom.innerHTML + input;
                         lastOperator = input;
-                        result = evaluate(firstNumber, lastNumber, lastOperator);
+                    } else {
+                        screenTop.innerHTML += screenBottom.innerHTML + input; //6*
+                        firstNumber = screenBottom.innerHTML; //6
+                        lastOperator = input; //*
+                    }
+                } else if (count == 1) {        //After operator pressed again     
+                    if (screenTop.innerHTML.includes("=")) { //If equals was pressed
+                        console.log("lmao");
+                        firstNumber = result;
+                        console.log(result);
+                        lastNumber = screenBottom.innerHTML;
+                        lastOperator = input;
+                        screenTop.innerHTML = lastNumber + input
                         console.log("Equals: " + result)
-                        screenTop.innerHTML=result + input
                     } else {
                         lastNumber = screenBottom.innerHTML;
                         console.log("count1:FirstNumber " + firstNumber)
@@ -113,14 +120,13 @@ allButtons.forEach(button => {
                         firstNumber = result;
                         console.log("Again  " + lastNumber);
                     }
-
                 } else if (count >= 2) {
                     if (screenTop.innerHTML.includes("=")) {
-                        firstNumber=result;
-                        lastNumber=screenBottom.innerHTML;
-                        result = evaluate(firstNumber, lastNumber, lastOperator);
+                        console.log("big2")
+                        lastNumber = screenBottom.innerHTML;
                         console.log("Equals: " + result)
-                        screenTop.innerHTML=result + input
+                        screenTop.innerHTML = result + input
+                        lastOperator = input;
                     } else {
                         lastNumber = screenBottom.innerHTML;
                         screenTop.innerHTML += screenBottom.innerHTML;
@@ -135,7 +141,6 @@ allButtons.forEach(button => {
                     }
 
                 }
-
                 active = true;
                 count = count + 1;
                 console.log("Overallcount" + count);
@@ -145,18 +150,29 @@ allButtons.forEach(button => {
             /////////////////////////////////////////////////////////////////////////////////////////////////////
 
             case '=':
-                if (screenBottom.innerHTML == "0") {
-                    screenTop.innerHTML = "0=";
-                } else {
-                    lastNumber = screenBottom.innerHTML;
+                if ((screenTop.innerHTML == "") && (screenBottom.innerHTML == "0")) {
+                    screenBottom.innerHTML = "0";
+                    screenTop.innerHTML = "0="
+                }else if ((screenTop.innerHTML == "") && (screenBottom.innerHTML !== "0")) {
+                    console.log("here")
+                    firstNumber = screenBottom.innerHTML;
+                    screenTop.innerHTML = firstNumber + "="
+                }else if (screenTop.innerHTML.includes("=")) {
                     result = evaluate(firstNumber, lastNumber, lastOperator);
                     screenTop.innerHTML = firstNumber + lastOperator + lastNumber + "=";
                     screenBottom.innerHTML = result;
+                    console.log("hi")
+                    firstNumber = result;
+                } else {
                     lastNumber = screenBottom.innerHTML;
+                    console.log("smooth" + lastNumber); 
+                    result = evaluate(firstNumber, lastNumber, lastOperator);
+                    screenTop.innerHTML = firstNumber + lastOperator + lastNumber + "=";
+                    screenBottom.innerHTML = result;
                     firstNumber = result;
                     active = true;
                 }
-
+                active = true;
                 break;
         }
     });
