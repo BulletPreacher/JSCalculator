@@ -88,7 +88,6 @@ allButtons.forEach(button => {
             case '*':
             case '-':
             case '+':
-
                 if (count == 0) {
                     if (screenTop.innerHTML.includes("=")) {//After operator pressed for first time, E.g 6 *
                         screenTop.innerHTML = screenBottom.innerHTML + input;
