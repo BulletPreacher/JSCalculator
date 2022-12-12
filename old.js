@@ -86,7 +86,7 @@ allButtons.forEach(button => {
                     screenTop.innerHTML += screenBottom.innerHTML;
                     let result = evaluate(screenTop.innerHTML,lastOperator);
                     console.log(lastNumber);
-                    screenTop.innerHTML = result + input;
+                    screenTop.innerHTML = `${result} ${input} `;
                     screenBottom.innerHTML = result;
                 } else {
                     var moved = screenBottom.innerHTML;

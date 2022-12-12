@@ -88,52 +88,45 @@ allButtons.forEach(button => {
             case '*':
             case '-':
             case '+':
+                if (input == "*") {
+                    input = "x";
+                } else if (input == "/") {
+                    input = "÷";
+                }
+
                 if (count == 0) {
                     if (screenTop.innerHTML.includes("=")) {//After operator pressed for first time, E.g 6 *
-                        screenTop.innerHTML = screenBottom.innerHTML + input;
+                        screenTop.innerHTML = `${screenBottom.innerHTML} ${input}`;
                         lastOperator = input;
                     } else {
-                        screenTop.innerHTML += screenBottom.innerHTML + input; //6*
+                        screenTop.innerHTML += `${screenBottom.innerHTML} ${input}`; //6*
                         firstNumber = screenBottom.innerHTML; //6
                         lastOperator = input; //*
                     }
                 } else if (count == 1) {        //After operator pressed again     
                     if (screenTop.innerHTML.includes("=")) { //If equals was pressed
-                        console.log("lmao");
                         firstNumber = result;
-                        console.log(result);
                         lastNumber = screenBottom.innerHTML;
                         lastOperator = input;
-                        screenTop.innerHTML = lastNumber + input
-                        console.log("Equals: " + result)
-                    } else {
+                        screenTop.innerHTML = `${lastNumber} ${input}`
+                    } else {                   //After operator pressed and equals not pressed
                         lastNumber = screenBottom.innerHTML;
-                        console.log("count1:FirstNumber " + firstNumber)
-                        console.log("count1:LastNumber " + lastNumber)
-                        console.log("count1:Operator " + lastOperator)
                         result = evaluate(firstNumber, lastNumber, lastOperator);
-                        console.log(result);
-                        screenTop.innerHTML = result + input;
+                        screenTop.innerHTML = `${result} ${input} `;
                         screenBottom.innerHTML = result;
                         lastOperator = input;
                         firstNumber = result;
-                        console.log("Again  " + lastNumber);
                     }
                 } else if (count >= 2) {
                     if (screenTop.innerHTML.includes("=")) {
-                        console.log("big2")
                         lastNumber = screenBottom.innerHTML;
-                        console.log("Equals: " + result)
-                        screenTop.innerHTML = result + input
+                        screenTop.innerHTML = `${result} ${input} `
                         lastOperator = input;
                     } else {
                         lastNumber = screenBottom.innerHTML;
                         screenTop.innerHTML += screenBottom.innerHTML;
-                        console.log("count2:FirstNumber " + firstNumber)
-                        console.log("count2:LastNumber " + lastNumber)
-                        console.log("count2:Operator " + lastOperator)
                         result = evaluate(firstNumber, lastNumber, lastOperator);
-                        screenTop.innerHTML = result + input;
+                        screenTop.innerHTML = `${result} ${input} `;
                         firstNumber = result;
                         lastNumber = screenBottom.innerHTML;
                         lastOperator = input;
@@ -142,8 +135,6 @@ allButtons.forEach(button => {
                 }
                 active = true;
                 count = count + 1;
-                console.log("Overallcount" + count);
-
                 break;
 
             /////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -152,21 +143,18 @@ allButtons.forEach(button => {
                 if ((screenTop.innerHTML == "") && (screenBottom.innerHTML == "0")) {
                     screenBottom.innerHTML = "0";
                     screenTop.innerHTML = "0="
-                }else if ((screenTop.innerHTML == "") && (screenBottom.innerHTML !== "0")) {
-                    console.log("here")
+                } else if ((screenTop.innerHTML == "") && (screenBottom.innerHTML !== "0")) {
                     firstNumber = screenBottom.innerHTML;
                     screenTop.innerHTML = firstNumber + "="
-                }else if (screenTop.innerHTML.includes("=")) {
+                } else if (screenTop.innerHTML.includes("=")) {
                     result = evaluate(firstNumber, lastNumber, lastOperator);
-                    screenTop.innerHTML = firstNumber + lastOperator + lastNumber + "=";
+                    screenTop.innerHTML = `${firstNumber} ${lastOperator} ${lastNumber} =`;
                     screenBottom.innerHTML = result;
-                    console.log("hi")
                     firstNumber = result;
                 } else {
                     lastNumber = screenBottom.innerHTML;
-                    console.log("smooth" + lastNumber); 
                     result = evaluate(firstNumber, lastNumber, lastOperator);
-                    screenTop.innerHTML = firstNumber + lastOperator + lastNumber + "=";
+                    screenTop.innerHTML = `${firstNumber} ${lastOperator} ${lastNumber} =`;
                     screenBottom.innerHTML = result;
                     firstNumber = result;
                     active = true;
@@ -178,9 +166,9 @@ allButtons.forEach(button => {
 });
 
 function evaluate(num1, num2, symbol) {
-    if (symbol == "*") {
+    if (symbol == "x") {
         result = parseFloat(num1) * parseFloat(num2);
-    } else if (symbol == "/") {
+    } else if (symbol == "÷") {
         result = num1 / num2;
         if (result == "Infinity") {
             return "Stop it"
