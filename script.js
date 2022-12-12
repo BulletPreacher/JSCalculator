@@ -4,16 +4,13 @@ let screenBottom = document.getElementById('bottom');
 
 screenTop.innerHTML = "";
 screenBottom.innerHTML = "0";
-let operatorClicked = "false"
-let operatorClicked2 = "false"
-let equalsClicked = "false"
-let dotClicked = "false"
-var lastNumber = 0;
-var firstNumber = 0;
-var lastOperator = "";
-var result = 0;
-var active = false;
-var count = 0;
+let lastNumber = 0;
+let firstNumber = 0;
+let result = 0;
+let count = 0;
+let lastOperator = "";
+let active = false;
+
 
 allButtons.forEach(button => {
     button.addEventListener('click', function handleClick(e) {
@@ -22,16 +19,12 @@ allButtons.forEach(button => {
             case 'AC':
                 screenTop.innerHTML = "";
                 screenBottom.innerHTML = "0";
-                operatorClicked = "false"
-                operatorClicked2 = "false"
-                equalsClicked = "false"
-                dotClicked = "false"
-                firstNumber = 0
                 lastNumber = 0;
-                lastOperator = "";
+                firstNumber = 0;
                 result = 0;
-                active = false;
                 count = 0;
+                lastOperator = "";
+                active = false;
                 break;
             case 'del':
                 if (screenBottom.innerHTML.length == 1) {
@@ -41,14 +34,9 @@ allButtons.forEach(button => {
                 }
                 break;
             case '%':
-
                 let divideHundred = parseFloat(screenBottom.innerHTML) / 100;
                 screenBottom.innerHTML = divideHundred;
-
                 break;
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////////
-
             case '1':
             case '2':
             case '3':
@@ -81,9 +69,6 @@ allButtons.forEach(button => {
                     screenBottom.innerHTML += input; //Havent pressed operator, types normally
                 }
                 break;
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////////
-
             case '/':
             case '*':
             case '-':
@@ -131,14 +116,10 @@ allButtons.forEach(button => {
                         lastNumber = screenBottom.innerHTML;
                         lastOperator = input;
                     }
-
                 }
                 active = true;
                 count = count + 1;
                 break;
-
-            /////////////////////////////////////////////////////////////////////////////////////////////////////
-
             case '=':
                 if ((screenTop.innerHTML == "") && (screenBottom.innerHTML == "0")) {
                     screenBottom.innerHTML = "0";
